@@ -223,24 +223,7 @@ export default function Home() {
               </span>
             </div>
 
-            {/* <div
-              className={`${styles.input_group} ${
-                formik.errors.githubUsername && formik.touched.githubUsername
-                  ? 'border-rose-600'
-                  : ''
-              }`}
-            >
-              <input
-                type="text"
-                name="githubUsername"
-                placeholder="GitHub Username"
-                className={styles.input_text}
-                {...formik.getFieldProps('githubUsername')}
-              />
-              <span className="icon flex items-center px-4 ">
-                <HiAtSymbol size={24} />
-              </span>
-            </div> */}
+           
 
             {/* Drop Down */}
             <div className={styles.dropdownContainer}>
@@ -266,19 +249,7 @@ export default function Home() {
   );
 }
 
-// Guest
-function Guest() {
-  return (
-    <main className="container mx-auto text-center py-20 ">
-      <h3 className="text-4xl font-bold">Guest Home</h3>
-      <div className="flex justify-center">
-        <Link href={'./login'} className='mt-5 px-10 py-1 rounded-sm bg-indigo-500 text-gray-500'>
-          Sign In
-        </Link>
-      </div>
-    </main>
-  );
-}
+
 
 // Authorize
 function User({ session, handleSignOut }) {
