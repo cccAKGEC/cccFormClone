@@ -1,0 +1,9 @@
+
+.BackImg{
+   background: url("../../public/assets/cloud2.png");
+   background-repeat: no-repeat;
+   background-size: cover;
+  }
+.head{
+  font-family:   'Monomaniac One, sans-serif';
+}
