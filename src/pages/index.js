@@ -1,5 +1,6 @@
 import Head from 'next/head';
-import { useState } from 'react';
+
+import { useCallback, useEffect, useRef} from 'react';
 import { getSession, useSession, signOut } from 'next-auth/react';
 import Layout from '../../layout/layout';
 import styles from '../styles/Form.module.css';
@@ -7,23 +8,66 @@ import { HiAtSymbol, HiOutlineUser } from 'react-icons/hi';
 import { useFormik } from 'formik';
 import { registerValidate } from '../../lib/validate';
 import CommonDropdown from '@/components/DropDown';
-import {FaHackerrank,FaMobileAlt,FaLaptop} from "react-icons/fa"
-import {BsFillPersonCheckFill} from "react-icons/bs"
+import { FaHackerrank, FaMobileAlt, FaLaptop } from 'react-icons/fa';
+import { BsFillPersonCheckFill } from 'react-icons/bs';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useState } from 'react';
 
+import ReCAPTCHA from 'react-google-recaptcha';import {
+  GoogleReCaptchaProvider,
+  useGoogleReCaptcha
+} from 'react-google-recaptcha-v3';
 
 export default function Home() {
   const { data: session } = useSession();
 
+  // Define the 'section' variable
+  const section = ['1', '2', '3'];
+  const branchOptions = [
+    'CSE',
+    'CS',
+    'CSE(AIML)',
+    'CSE(ds)',
+    'CSE(Hindi)',
+    'IT',
+    'CSIT',
+    'AIML',
+    'ECE',
+    'EN',
+    'Mechanical',
+    'Civil',
+  ];
+  
+  const yearOptions = ['2'];
+  
+  const residenceOptions = ['Hosteller', 'Day Scholar'];
+  
+  const genderOptions = ['Male', 'Female', 'Others'];
+  const captchaRef = useRef();
+
   // Check if session exists and initialize initialValues accordingly
   const initialValues = {
-    username: session?.user?.name || '',
+    name: session?.user?.name || '',
     email: session?.user?.email || '',
     studentNumber: '',
-    phone:  '',
+    phone: '',
     hackerRankUsername: '',
-    UnstopUsername:'',
+    UnstopUsername: '',
   };
+
+  const [selectedSection, setSelectedSection] = useState('');
+  const [selectedBranch, setSelectedBranch] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
+  const [selectedGender, setSelectedGender] = useState('');
+  const [selectedResidence, setSelectedResidence] = useState('');
+  const [reCaptchaValue, setReCaptchaValue] = useState('');
+  const [isRecaptchaVerified, setIsRecaptchaVerified] = useState(false);
+
+  // v3 
+  // const { executeRecaptcha } = useGoogleReCaptcha();
+   
 
   const formik = useFormik({
     initialValues,
@@ -33,73 +77,70 @@ export default function Home() {
 
   async function onSubmit(values) {
     try {
-      // Make a POST request to your API endpoint
-      const response = await axios.post('/api/register', values);
+      // Send data to your API for registration
+      const valuesToSend = {
+        ...values,
+
+  section: selectedSection,
+  branch: selectedBranch,
+  year: selectedYear,
+  gender: selectedGender,
+  residence: selectedResidence,
+  captcha : reCaptchaValue,
+      };
   
-      // Check if the registration was successful
-      if (response.status === 200) {
-        // Show a success toast using sweetalert
-        showSuccessToast('Registration successful');
-  
-        // Reset the form to its initial state (empty values)
-        resetForm();
-  
-        // You can also clear the selectedKeys state if needed
-        setSelectedKeys([]);
+      const response = await axios.post("https://ccc1.onrender.com/api/students/register", valuesToSend);
+
+      if (response.status === 200 || response.status === 201) {
+        console.log("Registration successful");
+        toast.success("Registration successful");
+        formik.resetForm();
+        setSelectedSection('');
+        setSelectedBranch('');
+        setSelectedYear('');
+        setSelectedGender('');
+        setSelectedResidence('');
       } else {
-        // Handle other responses or errors
+        console.error("Registration failed with status:", response.status);
+        console.error("Response data:", response.data); // Log the response data
       }
     } catch (error) {
-      // Handle any network errors or API errors
-      console.error('API request failed:', error);
+      console.error("API request failed:", error);
     }
   }
-
+  const handleReCAPTCHA = (value) => {
+    formik.setFieldValue('captcha', value); // Update the formik field value
+    setReCaptchaValue(value);
+    setIsRecaptchaVerified(true); // Set reCAPTCHA verification status
+    console.log('reCAPTCHA verified:', isRecaptchaVerified); // Debugging
+  };
   function handleSignOut() {
     signOut();
   }
+  // v3
+  // const handleReCaptchaVerify = useCallback(async () => {
+  //   if (!executeRecaptcha) {
+  //     console.log('Execute recaptcha not yet available');
+  //     return;
+  //   }
 
-  const [selectedKeys, setSelectedKeys] = useState([]);
-  const section = [
-    'S-1',
-    'S-2',
-    'S-3',
-    'S-4',
-    'S-5',
-    'S-6',
-    'S-7',
-    'S-8',
-    'S-9',
-    'S-11',
-    'S-12',
-    'S-13',
-    'S-14',
-    'S-15',
-    'S-16',
-    'S-17',
-    'S-18',
-    'S-19',
-  ];
-  const branch = [
-    'CSE',
-    'CS',
-    'CSE(AIML)',
-    'CSE(Data Science)',
-    'CSE(hindi)',
-    'IT',
-    'CSIT',
-    'AIML',
-    'ECE',
-    'EN',
-    'Mechanical',
-    'Civil',
-  ];
-  const year = ['2nd Year'];
-  const residence = ['Hosteller', 'Day Scholar'];
-  const gender = ['Male', 'Female', 'Others'];
+  //   const token = await executeRecaptcha('yourAction');
+  //   // Do whatever you want with the token
+  // }, [executeRecaptcha]);
+
+  // You can use useEffect to trigger the verification as soon as the component being loaded
+  // useEffect(() => {
+  //   handleReCaptchaVerify();
+  // }, [handleReCaptchaVerify]);
+
+  // function onChange(value) {
+  //   console.log("Captcha value:", value);
+  // }
 
   return (
     <>
+          
+          {/* <GoogleReCaptchaProvider reCaptchaKey="[Your recaptcha key]"> */}
       <Head>
         <title>Home Page</title>
       </Head>
@@ -110,7 +151,8 @@ export default function Home() {
         <Head>
           <title>Register</title>
         </Head>
-        <section className="w-3/4 mx-auto flex flex-col gap-10 bg-cover">
+        {/* <GoogleReCaptchaProvider reCaptchaKey="[Your recaptcha key]"> */}
+        <section className="w-3/4 md:mx-auto flex flex-col gap-4 bg-cover">
           <div className="title">
             <h1 className="text-white text-4xl font-bold py-4 ">Register</h1>
           </div>
@@ -118,15 +160,16 @@ export default function Home() {
           <form className="flex flex-col gap-5" onSubmit={formik.handleSubmit}>
             <div
               className={`${styles.input_group} ${
-                formik.errors.username && formik.touched.username ? 'border-rose-600' : ''
+                formik.errors.name && formik.touched.name ? 'border-rose-600' : ''
               }`}
             >
               <input
                 type="text"
-                name="username"
+                name="name"
                 placeholder={session?.user?.name || ''}
                 className={styles.input_text}
-                {...formik.getFieldProps('username')}
+                {...formik.getFieldProps('name')}
+                required
               />
               <span className="icon flex items-center px-4 ">
                 <HiOutlineUser size={24} />
@@ -139,6 +182,7 @@ export default function Home() {
               }`}
             >
               <input
+              // disabled
                 type="email"
                 name="email"
                 placeholder={session?.user?.email || ''}
@@ -163,6 +207,8 @@ export default function Home() {
                 placeholder="Student Number"
                 className={styles.input_text}
                 {...formik.getFieldProps('studentNumber')}
+                inputMode="numeric"
+                required
               />
               <span className="icon flex items-center px-4 ">
                 <BsFillPersonCheckFill size={24} />
@@ -175,11 +221,12 @@ export default function Home() {
               }`}
             >
               <input
-                type="text"
+                type="number"
                 name="phone"
                 placeholder="Phone Number"
                 className={styles.input_text}
                 {...formik.getFieldProps('phone')}
+                required
               />
               <span className="icon flex items-center px-4 ">
                 <FaMobileAlt size={24} />
@@ -199,6 +246,7 @@ export default function Home() {
                 placeholder="HackerRank Username"
                 className={styles.input_text}
                 {...formik.getFieldProps('hackerRankUsername')}
+                required
               />
               <span className="icon flex items-center px-4 ">
                 <FaHackerrank size={24} />
@@ -217,39 +265,82 @@ export default function Home() {
                 placeholder="Unstop Username"
                 className={styles.input_text}
                 {...formik.getFieldProps('UnstopUsername')}
+                required
               />
               <span className="icon flex items-center px-4 ">
                 <FaLaptop size={24} />
               </span>
             </div>
 
-           
-
             {/* Drop Down */}
             <div className={styles.dropdownContainer}>
-              <CommonDropdown options={section} selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys} initialState="Section" />
-              <CommonDropdown options={branch} selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys} initialState="Branch" />
-              <CommonDropdown options={year} selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys} initialState="Year" />
+              <CommonDropdown
+              name = "section"
+                options={section}
+                selectedKeys={selectedSection}
+                setSelectedKeys={setSelectedSection}
+                initialState="Section"
+                
+              />
+              <CommonDropdown
+              name = "branch"
+                options={branchOptions}
+                selectedKeys={selectedBranch}
+                setSelectedKeys={setSelectedBranch}
+                initialState="Branch"
+                
+              />
+              <CommonDropdown
+              name = "year"
+                options={yearOptions}
+                selectedKeys={selectedYear}
+                setSelectedKeys={setSelectedYear}
+                initialState="Year"
+              />
+              </div>
+               <div className={styles.dropdownContainer}>
+              <CommonDropdown
+              name = "residence"
+                options={residenceOptions}
+                selectedKeys={selectedResidence}
+                setSelectedKeys={setSelectedResidence}
+                initialState="Residence"
+              />
+              <CommonDropdown
+              name = "gender"
+                options={genderOptions}
+                selectedKeys={selectedGender}
+                setSelectedKeys={setSelectedGender}
+                initialState="Gender"
+              />
+              
+              {/* Other dropdowns here */}
             </div>
-            <div className={styles.dropdownContainer}>
-              <CommonDropdown options={gender} selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys} initialState="Gender" />
-              <CommonDropdown options={residence} selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys} initialState="Residence" />
+            <div className='flex justify-center items-center'>
+            <ReCAPTCHA sitekey ="6Le_np0mAAAAALMOBxjRyHfzDwsn3QLDIKZz7bMg" onChange={handleReCAPTCHA} ref={captchaRef} required  />
             </div>
+            
 
             {/* login button */}
             <div className="input-button text-black">
-              <button type="submit" className={styles.button}>
-                Register
-              </button>
+            <button
+  type="submit"
+  className={styles.button}
+  disabled={!isRecaptchaVerified} // Disable button if reCAPTCHA is not verified
+>
+  Register
+</button>
+
             </div>
           </form>
         </section>
+        {/* </GoogleReCaptchaProvider> */}
       </Layout>
+      <ToastContainer /> {/* Include ToastContainer here */}
+      
     </>
   );
 }
-
-
 
 // Authorize
 function User({ session, handleSignOut }) {

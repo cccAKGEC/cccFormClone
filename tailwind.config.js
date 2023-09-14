@@ -16,7 +16,11 @@ module.exports = {
     extend: {
       backgroundImage: {
       'hero-pattern': "url('/public/assets/img2.png')",
-    }},
+    },
+    screens: {
+      'mobile': {'max': '639px'},
+    },
+  },
   },
   plugins: [nextui()],
 }

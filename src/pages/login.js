@@ -1,11 +1,12 @@
 import Head from "next/head"
-import Layout from "../../layout/layout"
+import Layout2 from "../../layout/layout2"
 import styles from "../styles/Form.module.css"
 import Image from "next/image"
 import { useState } from "react"
 import { signIn } from "next-auth/react"
 import { useFormik } from "formik"
 import login_validate from "../../lib/validate"
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -33,7 +34,7 @@ const Login = () => {
   }
 
   return (
-    <Layout>
+    <Layout2>
       <Head>
         <title>Login</title>
       </Head>
@@ -49,7 +50,7 @@ const Login = () => {
           </div>
         </form>
       </section>
-    </Layout>
+    </Layout2>
   );
 };
 

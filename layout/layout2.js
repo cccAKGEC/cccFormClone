@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import styles from '../src/styles/Layout.module.css';
 
-const Layout = ({ children }) => {
+const Layout2 = ({ children }) => {
   const spooc23Style = {
     fontFamily: 'Monomaniac One, sans-serif', // Specify the font family here
   };
 
   return (
-    <div className={`flex h-[125vh] ${styles.BackImg}`}>
+    <div className={`flex h-[100vh] ${styles.BackImg}`}>
       <div className="m-auto rounded-md md:py-0 grid lg:grid-cols-2 md:w-[90w] ">
         <div className="mt-2 md:mt-12">
           <div className="flex ml-[10%] justify-left items-center space-x-2 md:space-x-6 md:justify-center"  >
@@ -18,8 +18,8 @@ const Layout = ({ children }) => {
           <div>
             <h3 className="mt-1 md:mt-10 flex ml-[30%]  text-white text-2xl text-center md:flex md:justify-center md:16 md:ml-0">Presents</h3>
           </div>
-          <div className="mt-3 md:mt-16">
-            <h1 className="md:text-center md:ml-0 font-semibold text-white text-5xl text-left ml-[15%] md:text-9xl uppercase w-full md:w-[43rem]" style={spooc23Style}>SPOCC’ 23</h1>
+          <div className="mt-3 md:mt-2 md:mb-12">
+            <h1 className="md:text-center md:mb-3 md:ml-0 font-semibold text-white text-5xl text-left ml-[15%] md:text-9xl uppercase w-full md:w-[43rem]" style={spooc23Style}>SPOCC’ 23</h1>
             <h2 className="md:mt-10 mt-3 text-white md:text-3xl text-[1.2rem] md:text-center ml-[18%] md:ml-0">THE RECRUITMENT DRIVE</h2>
           </div>
         </div>
@@ -54,4 +54,4 @@ const Layout = ({ children }) => {
   );
 };
 
-export default Layout;
+export default Layout2;
