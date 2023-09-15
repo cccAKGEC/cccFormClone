@@ -110,13 +110,13 @@ export default function Home() {
       if (response.status === 200 || response.status === 201) {
         console.log("Registration successful");
         toast.success("Registration successful");
-        // formik.resetForm();
-        // setSelectedSection('');
-        // setSelectedBranch('');
-        // setSelectedYear('');
-        // setSelectedGender('');
-        // setSelectedResidence('');
-        // setSelectedDomain('');
+        formik.resetForm();
+        setSelectedSection('');
+        setSelectedBranch('');
+        setSelectedYear('');
+        setSelectedGender('');
+        setSelectedResidence('');
+        setSelectedDomain('');
       } else {
         console.error("Registration failed with status:", response.status);
         console.error("Response data:", response.data); // Log the response data
@@ -206,7 +206,7 @@ export default function Home() {
               }`}
             >
               <input
-              // disabled
+              disabled
                 type="email"
                 name="email"
                 placeholder={session?.user?.email || ''}
