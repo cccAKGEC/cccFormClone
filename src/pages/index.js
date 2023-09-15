@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-import { useCallback, useEffect, useRef} from 'react';
+import React, { useCallback, useEffect, useRef} from 'react';
 import { getSession, useSession, signOut } from 'next-auth/react';
 import Layout from '../../layout/layout';
 import styles from '../styles/Form.module.css';
@@ -14,11 +14,13 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react';
+import ReCAPTCHA from "react-google-recaptcha";
 
-import ReCAPTCHA from 'react-google-recaptcha';import {
-  GoogleReCaptchaProvider,
-  useGoogleReCaptcha
-} from 'react-google-recaptcha-v3';
+// import ReCAPTCHA from 'react-google-recaptcha';
+// import {
+//   GoogleReCaptchaProvider,
+//   useGoogleReCaptcha
+// } from 'react-google-recaptcha-v3';
 
 export default function Home() {
   const { data: session } = useSession();
@@ -45,6 +47,7 @@ export default function Home() {
   const residenceOptions = ['Hosteller', 'Day Scholar'];
   
   const genderOptions = ['Male', 'Female', 'Others'];
+  const domainOption = ["Developer","Designer"]
   const captchaRef = useRef();
 
   // Check if session exists and initialize initialValues accordingly
@@ -54,7 +57,7 @@ export default function Home() {
     studentNumber: '',
     phone: '',
     hackerRankUsername: '',
-    UnstopUsername: '',
+    // UnstopUsername: '',
   };
 
   const [selectedSection, setSelectedSection] = useState('');
@@ -62,8 +65,14 @@ export default function Home() {
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedGender, setSelectedGender] = useState('');
   const [selectedResidence, setSelectedResidence] = useState('');
+  
+  const [selectedDomain, setSelectedDomain] = useState('');
   const [reCaptchaValue, setReCaptchaValue] = useState('');
   const [isRecaptchaVerified, setIsRecaptchaVerified] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = React.useState(null);
+
+
+  
 
   // v3 
   // const { executeRecaptcha } = useGoogleReCaptcha();
@@ -76,6 +85,10 @@ export default function Home() {
   });
 
   async function onSubmit(values) {
+    if (!recaptchaToken) {
+      alert("Please click reCAPTCHA checkbox!");
+      return;
+    }
     try {
       // Send data to your API for registration
       const valuesToSend = {
@@ -86,7 +99,10 @@ export default function Home() {
   year: selectedYear,
   gender: selectedGender,
   residence: selectedResidence,
-  captcha : reCaptchaValue,
+  domain:selectedDomain,
+  // captcha : reCaptchaValue,
+  recaptchaToken,
+        recaptchaVersion: "V2_CHECKBOX",
       };
   
       const response = await axios.post("https://ccc1.onrender.com/api/students/register", valuesToSend);
@@ -94,12 +110,13 @@ export default function Home() {
       if (response.status === 200 || response.status === 201) {
         console.log("Registration successful");
         toast.success("Registration successful");
-        formik.resetForm();
-        setSelectedSection('');
-        setSelectedBranch('');
-        setSelectedYear('');
-        setSelectedGender('');
-        setSelectedResidence('');
+        // formik.resetForm();
+        // setSelectedSection('');
+        // setSelectedBranch('');
+        // setSelectedYear('');
+        // setSelectedGender('');
+        // setSelectedResidence('');
+        // setSelectedDomain('');
       } else {
         console.error("Registration failed with status:", response.status);
         console.error("Response data:", response.data); // Log the response data
@@ -114,6 +131,13 @@ export default function Home() {
     setIsRecaptchaVerified(true); // Set reCAPTCHA verification status
     console.log('reCAPTCHA verified:', isRecaptchaVerified); // Debugging
   };
+  const handleRecaptchaChange = React.useCallback((value) => {
+    // console.log("FormWithCheckbox::handleRecaptchaChange > value: ", value);
+    setRecaptchaToken(value);
+    setReCaptchaValue(value);
+    setIsRecaptchaVerified(true); // Set reCAPTCHA verification status
+    // console.log('reCAPTCHA verified:', isRecaptchaVerified); // Debugging
+  }, []);
   function handleSignOut() {
     signOut();
   }
@@ -252,7 +276,7 @@ export default function Home() {
                 <FaHackerrank size={24} />
               </span>
             </div>
-            <div
+            {/* <div
               className={`${styles.input_group} ${
                 formik.errors.UnstopUsername && formik.touched.UnstopUsername
                   ? 'border-rose-600'
@@ -270,17 +294,17 @@ export default function Home() {
               <span className="icon flex items-center px-4 ">
                 <FaLaptop size={24} />
               </span>
-            </div>
+            </div> */}
 
             {/* Drop Down */}
             <div className={styles.dropdownContainer}>
+              
               <CommonDropdown
-              name = "section"
-                options={section}
-                selectedKeys={selectedSection}
-                setSelectedKeys={setSelectedSection}
-                initialState="Section"
-                
+              name = "year"
+                options={yearOptions}
+                selectedKeys={selectedYear}
+                setSelectedKeys={setSelectedYear}
+                initialState="Year"
               />
               <CommonDropdown
               name = "branch"
@@ -291,14 +315,23 @@ export default function Home() {
                 
               />
               <CommonDropdown
-              name = "year"
-                options={yearOptions}
-                selectedKeys={selectedYear}
-                setSelectedKeys={setSelectedYear}
-                initialState="Year"
+              name = "section"
+                options={section}
+                selectedKeys={selectedSection}
+                setSelectedKeys={setSelectedSection}
+                initialState="Section"
+                
               />
+              
               </div>
                <div className={styles.dropdownContainer}>
+               <CommonDropdown
+              name = "gender"
+                options={genderOptions}
+                selectedKeys={selectedGender}
+                setSelectedKeys={setSelectedGender}
+                initialState="Gender"
+              />
               <CommonDropdown
               name = "residence"
                 options={residenceOptions}
@@ -307,17 +340,17 @@ export default function Home() {
                 initialState="Residence"
               />
               <CommonDropdown
-              name = "gender"
-                options={genderOptions}
-                selectedKeys={selectedGender}
-                setSelectedKeys={setSelectedGender}
-                initialState="Gender"
+              name = "domain"
+                options={domainOption}
+                selectedKeys={selectedDomain}
+                setSelectedKeys={setSelectedDomain}
+                initialState="Domain"
               />
               
               {/* Other dropdowns here */}
             </div>
             <div className='flex justify-center items-center'>
-            <ReCAPTCHA sitekey ="6Le_np0mAAAAALMOBxjRyHfzDwsn3QLDIKZz7bMg" onChange={handleReCAPTCHA} ref={captchaRef} required  />
+            <ReCAPTCHA sitekey ="6Le_np0mAAAAALMOBxjRyHfzDwsn3QLDIKZz7bMg" onChange={handleRecaptchaChange} ref={captchaRef} required  />
             </div>
             
 

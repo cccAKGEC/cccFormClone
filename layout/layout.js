@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <div className={`flex h-[125vh] ${styles.BackImg}`}>
+    <div className={`flex h-[100%] lg:h-[125vh] ${styles.BackImg}`}>
       <div className="m-auto rounded-md md:py-0 grid lg:grid-cols-2 md:w-[90w] ">
         <div className="mt-2 md:mt-12">
           <div className="flex ml-[10%] justify-left items-center space-x-2 md:space-x-6 md:justify-center"  >
@@ -19,12 +19,12 @@ const Layout = ({ children }) => {
             <h3 className="mt-1 md:mt-10 flex ml-[30%]  text-white text-2xl text-center md:flex md:justify-center md:16 md:ml-0">Presents</h3>
           </div>
           <div className="mt-3 md:mt-16">
-            <h1 className="md:text-center md:ml-0 font-semibold text-white text-5xl text-left ml-[15%] md:text-9xl uppercase w-full md:w-[43rem]" style={spooc23Style}>SPOCC’ 23</h1>
-            <h2 className="md:mt-10 mt-3 text-white md:text-3xl text-[1.2rem] md:text-center ml-[18%] md:ml-0">THE RECRUITMENT DRIVE</h2>
+            <h1 className="md:text-center md:ml-0 font-semibold text-white text-3xl text-left ml-[12%] md:text-[5rem] uppercase w-full md:w-[43rem]" style={spooc23Style}>HACKOVERFLOW</h1>
+            <h2 className="md:mt-10 mt-3 text-white md:text-3xl text-[1.2rem] md:text-center ml-[18%] md:ml-0">WILD CARD ROUND</h2>
           </div>
         </div>
         <div className="right flex flex-col justify-evenly">
-          <div className="text-center  pl-16">{children}</div>
+          <div className="text-center  pl-[3rem] md:pl-16">{children}</div>
         </div>
       </div>
 
