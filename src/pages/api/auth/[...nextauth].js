@@ -7,11 +7,6 @@ export default NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
-      authorizationUrl: 'https://accounts.google.com/o/oauth2/auth',
-      authorizationParams: {
-        // prompt: 'select_account', // This is an example custom parameter
-        hd: 'akgec.ac.in', // Custom parameter to specify the hosted domain
-      },
     }),
     GithubProvider({
       clientId:process.env.GITHUB_ID,
