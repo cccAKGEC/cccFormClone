@@ -10,7 +10,7 @@ const Layout2 = ({ children }) => {
     <div className={`flex md:h-[100vh] h-[100vh] ${styles.BackImg}`}>
       <div className="m-auto rounded-md md:py-0 grid lg:grid-cols-2 md:w-[90w] ">
         <div className="mt-2 md:mt-12">
-          <div className="flex ml-[10%] justify-left items-center space-x-2 md:space-x-6 md:justify-center"  >
+          <div className="flex md:ml-[10%] justify-left items-center space-x-2 md:space-x-6 md:justify-center"  >
             <Image src="/assets/logo.png" width={60} height={60} alt="CCC-logo" />
             <h2 className="text-white text-3xl md:text-1xl text-center">Cloud Computing Cell</h2>
           </div>
@@ -22,7 +22,7 @@ const Layout2 = ({ children }) => {
             {/* <h1 className="md:text-center md:mb-3  font-semibold text-white text-5xl text-left md:ml-[5%] md:text-9xl uppercase w-full md:w-[43rem]" style={spooc23Style}>SPOCC’ 23</h1>
             <h2 className="md:mt-10 mt-3 text-white md:text-3xl md:text-[1.2rem] text-[1.0rem] text-center md:ml-[18%] ">THE RECRUITMENT DRIVE</h2> */}
             
-            <h1 className="md:text-center md:mt-12 md:ml-0 font-semibold text-white text-3xl text-left ml-[12%] md:text-[5rem] uppercase w-full md:w-[43rem] " style={spooc23Style}>HACKOVERFLOW</h1>
+            <h1 className="md:text-center md:mt-12  font-semibold text-white text-3xl text-left md:ml-[12%] md:text-[5rem] uppercase w-full md:w-[43rem] " style={spooc23Style}>HACKOVERFLOW</h1>
             <h2 className="md:mt-10 mt-3 text-white md:text-3xl text-[1.2rem] md:text-center ml-[18%] md:ml-0">WILD CARD ROUND</h2>
           </div>
         </div>
@@ -40,7 +40,7 @@ const Layout2 = ({ children }) => {
           }
 
           .md\:text-1xl {
-            font-size: 1.125rem; /* Adjust the font size as needed */
+            font-size: 0.92rem; /* Adjust the font size as needed */
           }
 
           .grid {
