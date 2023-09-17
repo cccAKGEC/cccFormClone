@@ -176,7 +176,7 @@ export default function Home() {
           <title>Register</title>
         </Head>
         {/* <GoogleReCaptchaProvider reCaptchaKey="[Your recaptcha key]"> */}
-        <section className="w-3/4 md:mx-auto flex flex-col gap-4 bg-cover">
+        <section className="w-3/4 sm:w-[80%] md:mx-auto flex flex-col gap-4 bg-cover">
           <div className="title">
             <h1 className="text-white text-4xl font-bold py-4 ">Register</h1>
           </div>
@@ -276,7 +276,7 @@ export default function Home() {
                 <FaHackerrank size={24} />
               </span>
             </div>
-            {/* <div
+            <div
               className={`${styles.input_group} ${
                 formik.errors.UnstopUsername && formik.touched.UnstopUsername
                   ? 'border-rose-600'
@@ -294,7 +294,7 @@ export default function Home() {
               <span className="icon flex items-center px-4 ">
                 <FaLaptop size={24} />
               </span>
-            </div> */}
+            </div>
 
             {/* Drop Down */}
             <div className={styles.dropdownContainer}>
