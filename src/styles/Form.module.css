@@ -75,6 +75,28 @@
   /* .input-button{
       margin: 0;
   } */
+  .button_custom{
+    border: 1px solid #023d7d; /* This sets the border color to blue */
+    border-radius: 5px; /* Optional: Adds rounded corners to the button */
+    color: #01070e; /* Sets the text color to blue */
+  }
 
+  @media (max-width: 640px) {
+    /* Adjust the form container width */
+    .hello {
+      width: 100%; /* Use 100% width on smaller screens */
+    }
   
+    /* Increase the font size and padding for better mobile readability */
+    .input_text,
+    .dropdown-item {
+      font-size: 1.2rem;
+      padding: 1rem;
+    }
   
+    /* Adjust margins and padding for smaller screens */
+    .input_group,
+    .dropdownContainer {
+      margin: 0.1rem 0;
+    }
+  }

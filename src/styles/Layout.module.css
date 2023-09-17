@@ -1,19 +1,21 @@
+.BackImg {
+  background: url("../../public/assets/back.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+  /* background-size: 100% 100%; Default size for larger screens */
+  
+  /* Center the background image horizontally and vertically */
+  background-position: center center;
+}
 
-.BackImg{
-   background: url("../../public/assets/cloud2.png");
-   background-repeat: no-repeat;
-   background-size: cover;
-   background-size: 100vw 125vh;
-  }
-.head{
-  font-family:   'Monomaniac One, sans-serif';
-}
-@media (max-width: 767px) {
+.head {
+  font-family: 'Monomaniac One, sans-serif';
+} 
+
+/* @media (max-width: 767px) {
   /* Styles for mobile screens */
-  .BackImg{
-    background: url("../../public/assets/cloud2.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-size: 100vw 150vh;
-   }
-}
+  /* .BackImg {
+    background-size: 100vw 150vh; /* Adjust the height as needed for mobile */
+  /* } 
+}  */

@@ -1,5 +1,4 @@
 import Head from 'next/head';
-
 import React, { useCallback, useEffect, useRef} from 'react';
 import { getSession, useSession, signOut } from 'next-auth/react';
 import Layout from '../../layout/layout';
@@ -15,6 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useState } from 'react';
 import ReCAPTCHA from "react-google-recaptcha";
+import { FaSpinner } from 'react-icons/fa';
 
 // import ReCAPTCHA from 'react-google-recaptcha';
 // import {
@@ -57,7 +57,7 @@ export default function Home() {
     studentNumber: '',
     phone: '',
     hackerRankUsername: '',
-    // UnstopUsername: '',
+    UnstopUsername: '',
   };
 
   const [selectedSection, setSelectedSection] = useState('');
@@ -72,7 +72,8 @@ export default function Home() {
   const [recaptchaToken, setRecaptchaToken] = React.useState(null);
 
 
-  
+  const [isLoading, setIsLoading] = useState(false);
+
 
   // v3 
   // const { executeRecaptcha } = useGoogleReCaptcha();
@@ -89,6 +90,13 @@ export default function Home() {
       alert("Please click reCAPTCHA checkbox!");
       return;
     }
+    // Check if there are any validation errors
+  const errors = registerValidate(values);
+
+  if (Object.keys(errors).length > 0) {
+    // If there are validation errors, do not submit the form
+    return;
+  }
     try {
       // Send data to your API for registration
       const valuesToSend = {
@@ -120,6 +128,7 @@ export default function Home() {
       } else {
         console.error("Registration failed with status:", response.status);
         console.error("Response data:", response.data); // Log the response data
+        toast.error("Registration failed");
       }
     } catch (error) {
       console.error("API request failed:", error);
@@ -176,12 +185,12 @@ export default function Home() {
           <title>Register</title>
         </Head>
         {/* <GoogleReCaptchaProvider reCaptchaKey="[Your recaptcha key]"> */}
-        <section className="w-3/4 sm:w-[80%] md:mx-auto flex flex-col gap-4 bg-cover">
+        <section className="hello  p-2 md:mx-auto flex flex-col gap-4 bg-cover">
           <div className="title">
-            <h1 className="text-white text-4xl font-bold py-4 ">Register</h1>
+            <h1 className="text-sky-800 text-4xl font-semibold py-4  ">REGISTER</h1>
           </div>
           {/* form */}
-          <form className="flex flex-col gap-5" onSubmit={formik.handleSubmit}>
+          <form className="flex flex-col gap-5 md:w-[98%] w-[95%] " onSubmit={formik.handleSubmit}>
             <div
               className={`${styles.input_group} ${
                 formik.errors.name && formik.touched.name ? 'border-rose-600' : ''
@@ -206,7 +215,7 @@ export default function Home() {
               }`}
             >
               <input
-              disabled
+              // disabled
                 type="email"
                 name="email"
                 placeholder={session?.user?.email || ''}
@@ -216,6 +225,9 @@ export default function Home() {
               <span className="icon flex items-center px-4 ">
                 <HiAtSymbol size={24} />
               </span>
+              {formik.touched.email && formik.errors.email ? (
+      <div className="text-red-500 flex justify-center items-center">{formik.errors.email}</div>
+    ) : null}
             </div>
 
             <div
@@ -237,6 +249,9 @@ export default function Home() {
               <span className="icon flex items-center px-4 ">
                 <BsFillPersonCheckFill size={24} />
               </span>
+              {formik.touched.studentNumber && formik.errors.studentNumber ? (
+      <div className="text-red-500 flex justify-center items-center">{formik.errors.studentNumber}</div>
+    ) : null}
             </div>
 
             <div
@@ -255,6 +270,9 @@ export default function Home() {
               <span className="icon flex items-center px-4 ">
                 <FaMobileAlt size={24} />
               </span>
+              {formik.touched.phone && formik.errors.phone ? (
+      <div className="text-red-500 flex justify-center items-center">{formik.errors.phone}</div>
+    ) : null}
             </div>
 
             <div
@@ -350,21 +368,27 @@ export default function Home() {
               {/* Other dropdowns here */}
             </div>
             <div className='flex justify-center items-center'>
-            <ReCAPTCHA sitekey ="6Le_np0mAAAAALMOBxjRyHfzDwsn3QLDIKZz7bMg" onChange={handleRecaptchaChange} ref={captchaRef} required  />
+            <ReCAPTCHA important sitekey ="6Le_np0mAAAAALMOBxjRyHfzDwsn3QLDIKZz7bMg" onChange={handleRecaptchaChange} ref={captchaRef} required  />
             </div>
             
 
             {/* login button */}
             <div className="input-button text-black">
-            <button
-  type="submit"
-  className={styles.button}
-  disabled={!isRecaptchaVerified} // Disable button if reCAPTCHA is not verified
->
-  Register
-</button>
-
-            </div>
+  <button
+    type="submit"
+    className={`${styles.button} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+    disabled={!isRecaptchaVerified || isLoading}
+  >
+    {isLoading ? (
+      <span className="flex items-center">
+        <FaSpinner className="animate-spin mr-2" />
+        Registering...
+      </span>
+    ) : (
+      'Register'
+    )}
+  </button>
+</div>
           </form>
         </section>
         {/* </GoogleReCaptchaProvider> */}
