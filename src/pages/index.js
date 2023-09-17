@@ -215,7 +215,7 @@ export default function Home() {
               }`}
             >
               <input
-              // disabled
+              disabled
                 type="email"
                 name="email"
                 placeholder={session?.user?.email || ''}
