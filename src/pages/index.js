@@ -131,6 +131,7 @@ export default function Home() {
         toast.error("Registration failed");
       }
     } catch (error) {
+      toast.error("Registration failed");
       console.error("API request failed:", error);
     }
   }
