@@ -10,6 +10,7 @@ const Layout2 = ({ children }) => {
             src="/assets/img1.png"
             width={500}
             height={500}
+            priority
             alt="Your Image"
             style={{ boxShadow: '15px 10px 15px rgba(41, 62, 117, 0.35)' }}
           />
