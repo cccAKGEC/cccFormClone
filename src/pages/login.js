@@ -44,17 +44,10 @@ const Login = () => {
       <section className="w-3/4 mx-auto flex flex-col gap-10 bg-cover">
         <div className="title">
           
-          <h1 className="text-blue-800 text-4xl font-bold ">REGISTRATION OVER , SEE YOU AT EVENT </h1>
+          <h1 className="text-blue-800 text-4xl font-bold ">REGISTRATION OVER, SEE YOU AT EVENT</h1>
           
         </div>
-        // <form className="flex flex-col gap-5" onSubmit={formik.handleSubmit}>
-        //   <div className="input-button text-black">
-        //     <button onClick={handleGoogleSign} type="button" className={styles.button_custom}>
-        //       <Image src={'./assets/google.svg'} width={20} height={20} alt="google"></Image> Google
-    
-        //     </button>
-        //   </div>
-        // </form>
+        {/* Your form or other content goes here */}
       </section>
     </Layout2>
   );
