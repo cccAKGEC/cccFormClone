@@ -113,7 +113,7 @@ export default function Home() {
         recaptchaVersion: "V2_CHECKBOX",
       };
   
-      const response = await axios.post("https://ccc1.onrender.com/api/students/register", valuesToSend);
+      const response = await axios.post("https://v2-ccc1.onrender.com/api/students/register", valuesToSend);
 
       if (response.status === 200 || response.status === 201) {
         console.log("Registration successful");
