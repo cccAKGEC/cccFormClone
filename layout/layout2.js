@@ -5,7 +5,7 @@ const Layout2 = ({ children }) => {
   return (
     <div className={`flex md:h-[100vh] h-[100vh] ${styles.BackImg}`}>
       <div className="m-auto rounded-md md:py-0 grid lg:grid-cols-2 md:w-[90w] ">
-        <div className="mt-2 md:mt-12 flex justify-center items-center ml-0 md:ml-[-35%]">
+        <div className="mt-2 md:mt-12 flex justify-center items-center ml-0 md:ml-[0]">
           <Image
             src="/assets/img1.png"
             width={500}
